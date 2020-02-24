@@ -8,3 +8,7 @@
 ## [1.0.0+1] - Example directory
 
 * Provide an `/example` directory.
+
+## [1.0.1] - Fix Flutter stable
+
+* Swap the newer `textTheme.subtitle1` for the older `textTheme.subhead`.
