@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id nisl quis justo fringilla vehicula. Ut rutrum sapien enim, in egestas libero malesuada a. Donec tincidunt porttitor luctus. Nunc imperdiet laoreet libero id ornare. Quisque viverra est sed arcu varius, suscipit interdum turpis pharetra.""",
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .body1
                         .copyWith(fontSize: 16),
                   ),
                 ),
