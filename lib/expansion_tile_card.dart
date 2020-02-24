@@ -93,14 +93,10 @@ class ExpansionTileCard extends StatefulWidget {
   _ExpansionTileCardState createState() => _ExpansionTileCardState();
 }
 
-class _ExpansionTileCardState extends State<ExpansionTileCard>
-    with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween =
-      CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween =
-      CurveTween(curve: Curves.easeIn);
-  static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
+class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerProviderStateMixin {
+  static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
+  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+  static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
@@ -125,10 +121,9 @@ class _ExpansionTileCardState extends State<ExpansionTileCard>
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _isExpanded = PageStorage.of(context)?.readState(context) as bool ??
-        widget.initiallyExpanded;
-    _elevationFactor = _controller.drive(_easeOutTween);
-    if (_isExpanded) _controller.value = 1.0;
+    _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
+    if (_isExpanded)
+      _controller.value = 1.0;
   }
 
   @override
@@ -144,7 +139,8 @@ class _ExpansionTileCardState extends State<ExpansionTileCard>
         _controller.forward();
       } else {
         _controller.reverse().then<void>((void value) {
-          if (!mounted) return;
+          if (!mounted)
+            return;
           setState(() {
             // Rebuild without widget.children.
           });
@@ -179,8 +175,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard>
                   leading: widget.leading,
                   title: widget.title,
                   subtitle: widget.subtitle,
-                  trailing: widget.trailing ??
-                      RotationTransition(
+                  trailing: widget.trailing ?? RotationTransition(
                         turns: _iconTurns,
                         child: const Icon(Icons.expand_more),
                       ),
@@ -222,5 +217,6 @@ class _ExpansionTileCardState extends State<ExpansionTileCard>
       builder: _buildChildren,
       child: closed ? null : Column(children: widget.children),
     );
+
   }
 }
