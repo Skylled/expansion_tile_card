@@ -97,6 +97,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
   static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
+  Animatable<double> _elevationTween;
 
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
@@ -105,7 +106,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   AnimationController _controller;
   Animation<double> _iconTurns;
   Animation<double> _heightFactor;
-  Animation<double> _elevationFactor;
+  Animation<double> _elevation;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
   Animation<Color> _materialColor;
@@ -115,12 +116,14 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   @override
   void initState() {
     super.initState();
+    _elevationTween = Tween<double>(begin: 0.0, end: widget.elevation);
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
+    _elevation = _controller.drive(_elevationTween.chain(_easeOutTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
     if (_isExpanded)
       _controller.value = 1.0;
@@ -161,7 +164,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         type: MaterialType.card,
         color: _materialColor.value,
         borderRadius: widget.borderRadius,
-        elevation: widget.elevation * _elevationFactor.value,
+        elevation: _elevation.value,
         child: Container(
           padding: EdgeInsets.all(2.0),
           child: Column(
@@ -176,9 +179,9 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                   title: widget.title,
                   subtitle: widget.subtitle,
                   trailing: widget.trailing ?? RotationTransition(
-                        turns: _iconTurns,
-                        child: const Icon(Icons.expand_more),
-                      ),
+                    turns: _iconTurns,
+                    child: const Icon(Icons.expand_more),
+                  ),
                 ),
               ),
               ClipRect(
