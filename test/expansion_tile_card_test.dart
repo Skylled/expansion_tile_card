@@ -1,6 +1,6 @@
 // Originally based on expansion_tile_test.dart from Flutter.
 //
-// Copyright 2014 The Flutter Authors. All rights reserved.
+// Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -60,6 +60,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(
+        platform: TargetPlatform.iOS,
         dividerColor: _dividerColor,
       ),
       home: Material(
@@ -105,27 +106,23 @@ void main() {
 
     double getHeight(Key key) => tester.getSize(find.byKey(key)).height;
     Container getContainer(Key key) => tester.firstWidget(find.descendant(
-          of: find.byKey(key),
-          matching: find.byType(Container),
-        ));
+      of: find.byKey(key),
+      matching: find.byType(Container),
+    ));
 
-    expect(
-        getHeight(topKey), getHeight(expandedKey) - getHeight(tileKey) - 2.0);
+    expect(getHeight(topKey), getHeight(expandedKey) - getHeight(tileKey) - 2.0);
     expect(getHeight(topKey), getHeight(collapsedKey) - 2.0);
     expect(getHeight(topKey), getHeight(defaultKey) - 2.0);
 
-    BoxDecoration expandedContainerDecoration =
-        getContainer(expandedKey).decoration as BoxDecoration;
+    BoxDecoration expandedContainerDecoration = getContainer(expandedKey).decoration;
     expect(expandedContainerDecoration.color, Colors.red);
     expect(expandedContainerDecoration.border.top.color, _dividerColor);
     expect(expandedContainerDecoration.border.bottom.color, _dividerColor);
 
-    BoxDecoration collapsedContainerDecoration =
-        getContainer(collapsedKey).decoration as BoxDecoration;
+    BoxDecoration collapsedContainerDecoration = getContainer(collapsedKey).decoration;
     expect(collapsedContainerDecoration.color, Colors.transparent);
     expect(collapsedContainerDecoration.border.top.color, Colors.transparent);
-    expect(
-        collapsedContainerDecoration.border.bottom.color, Colors.transparent);
+    expect(collapsedContainerDecoration.border.bottom.color, Colors.transparent);
 
     await tester.tap(find.text('Expanded'));
     await tester.tap(find.text('Collapsed'));
@@ -135,39 +132,31 @@ void main() {
 
     // Pump to the middle of the animation for expansion.
     await tester.pump(const Duration(milliseconds: 100));
-    final BoxDecoration collapsingContainerDecoration =
-        getContainer(collapsedKey).decoration as BoxDecoration;
+    final BoxDecoration collapsingContainerDecoration = getContainer(collapsedKey).decoration;
     expect(collapsingContainerDecoration.color, Colors.transparent);
     // Opacity should change but color component should remain the same.
-    expect(collapsingContainerDecoration.border.top.color,
-        const Color(0x15333333));
-    expect(collapsingContainerDecoration.border.bottom.color,
-        const Color(0x15333333));
+    expect(collapsingContainerDecoration.border.top.color, const Color(0x15333333));
+    expect(collapsingContainerDecoration.border.bottom.color, const Color(0x15333333));
 
     // Pump all the way to the end now.
     await tester.pump(const Duration(seconds: 1));
 
     expect(getHeight(topKey), getHeight(expandedKey) - 2.0);
-    expect(
-        getHeight(topKey), getHeight(collapsedKey) - getHeight(tileKey) - 2.0);
+    expect(getHeight(topKey), getHeight(collapsedKey) - getHeight(tileKey) - 2.0);
     expect(getHeight(topKey), getHeight(defaultKey) - getHeight(tileKey) - 2.0);
 
     // Expanded should be collapsed now.
-    expandedContainerDecoration =
-        getContainer(expandedKey).decoration as BoxDecoration;
+    expandedContainerDecoration = getContainer(expandedKey).decoration;
     expect(expandedContainerDecoration.color, Colors.transparent);
     expect(expandedContainerDecoration.border.top.color, Colors.transparent);
     expect(expandedContainerDecoration.border.bottom.color, Colors.transparent);
 
     // Collapsed should be expanded now.
-    collapsedContainerDecoration =
-        getContainer(collapsedKey).decoration as BoxDecoration;
+    collapsedContainerDecoration = getContainer(collapsedKey).decoration;
     expect(collapsedContainerDecoration.color, Colors.transparent);
     expect(collapsedContainerDecoration.border.top.color, _dividerColor);
     expect(collapsedContainerDecoration.border.bottom.color, _dividerColor);
-  },
-      variant: const TargetPlatformVariant(
-          <TargetPlatform>{TargetPlatform.iOS, TargetPlatform.macOS}));
+  });
 
   testWidgets('ListTileTheme', (WidgetTester tester) async {
     final Key expandedTitleKey = UniqueKey();
@@ -178,9 +167,10 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
+          platform: TargetPlatform.iOS,
           accentColor: _accentColor,
           unselectedWidgetColor: _unselectedWidgetColor,
-          textTheme: const TextTheme(subtitle1: TextStyle(color: _headerColor)),
+          textTheme: const TextTheme(subhead: TextStyle(color: _headerColor)),
         ),
         home: Material(
           child: SingleChildScrollView(
@@ -207,10 +197,8 @@ void main() {
       ),
     );
 
-    Color iconColor(Key key) =>
-        tester.state<TestIconState>(find.byKey(key)).iconTheme.color;
-    Color textColor(Key key) =>
-        tester.state<TestTextState>(find.byKey(key)).textStyle.color;
+    Color iconColor(Key key) => tester.state<TestIconState>(find.byKey(key)).iconTheme.color;
+    Color textColor(Key key) => tester.state<TestTextState>(find.byKey(key)).textStyle.color;
 
     expect(textColor(expandedTitleKey), _accentColor);
     expect(textColor(collapsedTitleKey), _headerColor);
@@ -228,9 +216,7 @@ void main() {
     expect(textColor(collapsedTitleKey), _accentColor);
     expect(iconColor(expandedIconKey), _unselectedWidgetColor);
     expect(iconColor(collapsedIconKey), _accentColor);
-  },
-      variant: const TargetPlatformVariant(
-          <TargetPlatform>{TargetPlatform.iOS, TargetPlatform.macOS}));
+  });
 
   testWidgets('ExpansionTile subtitle', (WidgetTester tester) async {
     await tester.pumpWidget(
