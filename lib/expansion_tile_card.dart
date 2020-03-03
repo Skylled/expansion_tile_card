@@ -41,11 +41,14 @@ class ExpansionTileCard extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.elevation = 2.0,
     this.initiallyExpanded = false,
+    this.initialPadding = EdgeInsets.zero,
+    this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
     this.duration = const Duration(milliseconds: 200),
     this.elevationCurve = Curves.easeOut,
     this.heightFactorCurve = Curves.easeIn,
     this.turnsCurve = Curves.easeIn,
     this.colorCurve = Curves.easeIn,
+    this.paddingCurve = Curves.easeIn,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -92,6 +95,16 @@ class ExpansionTileCard extends StatefulWidget {
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
 
+  /// The padding around the outside of the ExpansionTileCard while collapsed.
+  /// 
+  /// Defaults to EdgeInsets.zero.
+  final EdgeInsetsGeometry initialPadding;
+
+  /// The padding around the outside of the ExpansionTileCard while collapsed.
+  /// 
+  /// Defaults to 6.0 vertical padding.
+  final EdgeInsetsGeometry finalPadding;
+
   /// The duration of the expand and collapse animations.
   /// 
   /// Defaults to 200 milliseconds.
@@ -117,6 +130,11 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to Curves.easeIn.
   final Curve colorCurve;
 
+  /// The animation curve used by the expanding/collapsing padding.
+  /// 
+  /// Defaults to Curves.easeIn.
+  final Curve paddingCurve;
+
   @override
   _ExpansionTileCardState createState() => _ExpansionTileCardState();
 }
@@ -127,10 +145,12 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
   final ColorTween _materialColorTween = ColorTween();
+  EdgeInsetsTween _edgeInsetsTween;
   Animatable<double> _elevationTween;
   Animatable<double> _heightFactorTween;
   Animatable<double> _turnsTween;
   Animatable<double> _colorTween;
+  Animatable<double> _paddingTween;
 
   AnimationController _controller;
   Animation<double> _iconTurns;
@@ -139,16 +159,22 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
   Animation<Color> _materialColor;
+  Animation<EdgeInsets> _padding;
 
   bool _isExpanded = false;
 
   @override
   void initState() {
     super.initState();
+    _edgeInsetsTween = EdgeInsetsTween(
+      begin: widget.initialPadding,
+      end: widget.finalPadding,
+    );
     _elevationTween = CurveTween(curve: widget.elevationCurve);
     _heightFactorTween = CurveTween(curve: widget.heightFactorCurve);
     _colorTween = CurveTween(curve: widget.colorCurve);
     _turnsTween = CurveTween(curve: widget.turnsCurve);
+    _paddingTween = CurveTween(curve: widget.paddingCurve);
 
     _controller = AnimationController(duration: widget.duration, vsync: this);
     _heightFactor = _controller.drive(_heightFactorTween);
@@ -157,6 +183,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
     _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
     _elevation = _controller.drive(Tween<double>(begin: 0.0, end: widget.elevation).chain(_elevationTween));
+    _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
     if (_isExpanded)
       _controller.value = 1.0;
@@ -190,9 +217,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
 
   Widget _buildChildren(BuildContext context, Widget child) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 6.0 * _heightFactor.value,
-      ),
+      padding: _padding.value,
       child: Material(
         type: MaterialType.card,
         color: _materialColor.value,
