@@ -12,3 +12,10 @@
 ## [1.0.1] - Fix Flutter stable
 
 * Swap the newer `textTheme.subtitle1` for the older `textTheme.subhead`.
+
+## [1.0.2] - API and visual improvements
+
+* Add option to provide your own animation curves.
+* Add option to customize animation duration.
+* Use better animation technique for padding.
+* Use custom InkWell, to respect rounded edges.
