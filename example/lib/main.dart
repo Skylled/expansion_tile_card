@@ -49,10 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
-                    vertical: 4.0,
+                    vertical: 8.0,
                   ),
                   child: Text(
-                    """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id nisl quis justo fringilla vehicula. Ut rutrum sapien enim, in egestas libero malesuada a. Donec tincidunt porttitor luctus. Nunc imperdiet laoreet libero id ornare. Quisque viverra est sed arcu varius, suscipit interdum turpis pharetra.""",
+"""Hi there, I'm a drop-in replacement for Flutter's ExpansionTile.
+
+Use me any time you think your app could benefit from being just a bit more Material.""",
                     style: Theme.of(context)
                         .textTheme
                         .body1
