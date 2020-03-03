@@ -10,8 +10,6 @@ library expansion_tile_card;
 
 import 'package:flutter/material.dart';
 
-const Duration _kExpand = Duration(milliseconds: 200);
-
 /// A single-line [ListTile] with a trailing button that expands or collapses
 /// the tile to reveal or hide the [children].
 ///
@@ -43,6 +41,11 @@ class ExpansionTileCard extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.elevation = 2.0,
     this.initiallyExpanded = false,
+    this.duration = const Duration(milliseconds: 200),
+    this.elevationCurve = Curves.easeOut,
+    this.heightFactorCurve = Curves.easeIn,
+    this.turnsCurve = Curves.easeIn,
+    this.colorCurve = Curves.easeIn,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -89,19 +92,45 @@ class ExpansionTileCard extends StatefulWidget {
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
 
+  /// The duration of the expand and collapse animations.
+  /// 
+  /// Defaults to 200 milliseconds.
+  final Duration duration;
+
+  /// The animation curve used to control the elevation of the expanded card.
+  /// 
+  /// Defaults to Curves.easeOut.
+  final Curve elevationCurve;
+
+  /// The animation curve used to control the height of the expanding/collapsing card.
+  /// 
+  /// Defaults to Curves.easeIn.
+  final Curve heightFactorCurve;
+
+  /// The animation curve used to control the rotation of the `trailing` widget.
+  /// 
+  /// Defaults to Curves.easeIn.
+  final Curve turnsCurve;
+
+  /// The animation curve used to control the header, icon, and material colors.
+  /// 
+  /// Defaults to Curves.easeIn.
+  final Curve colorCurve;
+
   @override
   _ExpansionTileCardState createState() => _ExpansionTileCardState();
 }
 
 class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
-  Animatable<double> _elevationTween;
 
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
   final ColorTween _materialColorTween = ColorTween();
+  Animatable<double> _elevationTween;
+  Animatable<double> _heightFactorTween;
+  Animatable<double> _turnsTween;
+  Animatable<double> _colorTween;
 
   AnimationController _controller;
   Animation<double> _iconTurns;
@@ -116,14 +145,18 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   @override
   void initState() {
     super.initState();
-    _elevationTween = Tween<double>(begin: 0.0, end: widget.elevation);
-    _controller = AnimationController(duration: _kExpand, vsync: this);
-    _heightFactor = _controller.drive(_easeInTween);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
-    _materialColor = _controller.drive(_materialColorTween.chain(_easeInTween));
-    _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _elevation = _controller.drive(_elevationTween.chain(_easeOutTween));
+    _elevationTween = CurveTween(curve: widget.elevationCurve);
+    _heightFactorTween = CurveTween(curve: widget.heightFactorCurve);
+    _colorTween = CurveTween(curve: widget.colorCurve);
+    _turnsTween = CurveTween(curve: widget.turnsCurve);
+
+    _controller = AnimationController(duration: widget.duration, vsync: this);
+    _heightFactor = _controller.drive(_heightFactorTween);
+    _iconTurns = _controller.drive(_halfTween.chain(_turnsTween));
+    _headerColor = _controller.drive(_headerColorTween.chain(_colorTween));
+    _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
+    _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
+    _elevation = _controller.drive(Tween<double>(begin: 0.0, end: widget.elevation).chain(_elevationTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
     if (_isExpanded)
       _controller.value = 1.0;
