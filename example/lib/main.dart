@@ -40,13 +40,16 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('This is item #$index'),
             subtitle: Text('Tap to see more!'),
             children: <Widget>[
+              Divider(
+                thickness: 1.0,
+                height: 1.0,
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16.0,
-                    right: 16.0,
-                    bottom: 4.0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 4.0,
                   ),
                   child: Text(
                     """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id nisl quis justo fringilla vehicula. Ut rutrum sapien enim, in egestas libero malesuada a. Donec tincidunt porttitor luctus. Nunc imperdiet laoreet libero id ornare. Quisque viverra est sed arcu varius, suscipit interdum turpis pharetra.""",
