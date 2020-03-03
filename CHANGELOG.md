@@ -19,3 +19,7 @@
 * Add option to customize animation duration.
 * Use better animation technique for padding.
 * Use custom InkWell, to respect rounded edges.
+
+## [1.0.2+1] - README update
+
+* Put a GIF into the README
