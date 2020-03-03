@@ -224,21 +224,25 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
         child: Container(
-          padding: EdgeInsets.all(2.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              ListTileTheme.merge(
-                iconColor: _iconColor.value,
-                textColor: _headerColor.value,
-                child: ListTile(
-                  onTap: _handleTap,
-                  leading: widget.leading,
-                  title: widget.title,
-                  subtitle: widget.subtitle,
-                  trailing: widget.trailing ?? RotationTransition(
-                    turns: _iconTurns,
-                    child: const Icon(Icons.expand_more),
+              InkWell(
+                onTap: _handleTap,
+                child: ListTileTheme.merge(
+                  iconColor: _iconColor.value,
+                  textColor: _headerColor.value,
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: ListTile(
+                      leading: widget.leading,
+                      title: widget.title,
+                      subtitle: widget.subtitle,
+                      trailing: widget.trailing ?? RotationTransition(
+                        turns: _iconTurns,
+                        child: const Icon(Icons.expand_more),
+                      ),
+                    ),
                   ),
                 ),
               ),
