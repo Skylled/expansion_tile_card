@@ -23,3 +23,7 @@
 ## [1.0.2+1] - README update
 
 * Put a GIF into the README
+
+## [1.0.2+2] - Inkwell fix
+
+* Use the same border for the Inkwell as used for the Card

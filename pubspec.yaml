@@ -1,7 +1,7 @@
 name: expansion_tile_card
 description: An "expansion" on the Flutter SDK's standard ExpansionTile, to create a
   Google Material Theme inspired raised widget, ExpansionTileCard, instead.
-version: 1.0.2+1
+version: 1.0.2+2
 homepage: https://github.com/Skylled/expansion_tile_card
 
 environment:

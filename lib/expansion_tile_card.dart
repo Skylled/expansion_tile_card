@@ -228,6 +228,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               InkWell(
+                customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
                 onTap: _handleTap,
                 child: ListTileTheme.merge(
                   iconColor: _iconColor.value,
