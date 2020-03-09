@@ -43,6 +43,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.initiallyExpanded = false,
     this.initialPadding = EdgeInsets.zero,
     this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
+    this.contentPadding,
     this.duration = const Duration(milliseconds: 200),
     this.elevationCurve = Curves.easeOut,
     this.heightFactorCurve = Curves.easeIn,
@@ -104,6 +105,11 @@ class ExpansionTileCard extends StatefulWidget {
   /// 
   /// Defaults to 6.0 vertical padding.
   final EdgeInsetsGeometry finalPadding;
+
+  /// The inner `contentPadding` of the ListTile widget.
+  /// 
+  /// If null, ListTile defaults to 16.0 horizontal padding.
+  final EdgeInsetsGeometry contentPadding;
 
   /// The duration of the expand and collapse animations.
   /// 
@@ -236,6 +242,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ListTile(
+                      contentPadding: widget.contentPadding,
                       leading: widget.leading,
                       title: widget.title,
                       subtitle: widget.subtitle,
