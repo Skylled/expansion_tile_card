@@ -27,3 +27,8 @@
 ## [1.0.2+2] - Inkwell fix
 
 * Use the same border for the Inkwell as used for the Card
+
+## [1.0.3] - More customizability
+
+* Introduce `contentPadding` to alter inner padding of ListTile.
+* Surface background color options as `baseColor` and `expandedColor`.
