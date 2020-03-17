@@ -44,6 +44,8 @@ class ExpansionTileCard extends StatefulWidget {
     this.initialPadding = EdgeInsets.zero,
     this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
     this.contentPadding,
+    this.baseColor,
+    this.expandedColor,
     this.duration = const Duration(milliseconds: 200),
     this.elevationCurve = Curves.easeOut,
     this.heightFactorCurve = Curves.easeIn,
@@ -110,6 +112,16 @@ class ExpansionTileCard extends StatefulWidget {
   /// 
   /// If null, ListTile defaults to 16.0 horizontal padding.
   final EdgeInsetsGeometry contentPadding;
+
+  /// The background color of the unexpanded tile.
+  /// 
+  /// If null, defaults to Theme.of(context).canvasColor.
+  final Color baseColor;
+
+  /// The background color of the expanded card.
+  /// 
+  /// If null, defaults to Theme.of(context).cardColor.
+  final Color expandedColor;
 
   /// The duration of the expand and collapse animations.
   /// 
@@ -277,8 +289,8 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       ..begin = theme.unselectedWidgetColor
       ..end = theme.accentColor;
     _materialColorTween
-      ..begin = theme.canvasColor
-      ..end = theme.cardColor;
+      ..begin = widget.baseColor ?? theme.canvasColor
+      ..end = widget.expandedColor ?? theme.cardColor;
     super.didChangeDependencies();
   }
 
