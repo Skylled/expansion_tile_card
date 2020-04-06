@@ -40,6 +40,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.trailing,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.elevation = 2.0,
+    this.initialElevation = 0.0,
     this.initiallyExpanded = false,
     this.initialPadding = EdgeInsets.zero,
     this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
@@ -94,6 +95,11 @@ class ExpansionTileCard extends StatefulWidget {
   ///
   /// Defaults to 2.0.
   final double elevation;
+
+  ///The elevetion when collapsed
+  ///
+  ///Defaults to 0.0
+  final initialElevation;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
@@ -200,7 +206,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
     _headerColor = _controller.drive(_headerColorTween.chain(_colorTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
-    _elevation = _controller.drive(Tween<double>(begin: 0.0, end: widget.elevation).chain(_elevationTween));
+    _elevation = _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
     if (_isExpanded)
