@@ -53,8 +53,11 @@ class ExpansionTileCard extends StatefulWidget {
     this.turnsCurve = Curves.easeIn,
     this.colorCurve = Curves.easeIn,
     this.paddingCurve = Curves.easeIn,
+    this.isThreeLine = false,
   })  : assert(initiallyExpanded != null),
         super(key: key);
+
+  final bool isThreeLine;
 
   /// A widget to display before the title.
   ///
@@ -260,6 +263,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ListTile(
+                      isThreeLine: widget.isThreeLine,
                       contentPadding: widget.contentPadding,
                       leading: widget.leading,
                       title: widget.title,
