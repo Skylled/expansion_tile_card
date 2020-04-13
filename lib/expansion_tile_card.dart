@@ -102,63 +102,63 @@ class ExpansionTileCard extends StatefulWidget {
   ///The elevetion when collapsed
   ///
   ///Defaults to 0.0
-  final initialElevation;
+  final double initialElevation;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
 
   /// The padding around the outside of the ExpansionTileCard while collapsed.
-  /// 
+  ///
   /// Defaults to EdgeInsets.zero.
   final EdgeInsetsGeometry initialPadding;
 
   /// The padding around the outside of the ExpansionTileCard while collapsed.
-  /// 
+  ///
   /// Defaults to 6.0 vertical padding.
   final EdgeInsetsGeometry finalPadding;
 
   /// The inner `contentPadding` of the ListTile widget.
-  /// 
+  ///
   /// If null, ListTile defaults to 16.0 horizontal padding.
   final EdgeInsetsGeometry contentPadding;
 
   /// The background color of the unexpanded tile.
-  /// 
+  ///
   /// If null, defaults to Theme.of(context).canvasColor.
   final Color baseColor;
 
   /// The background color of the expanded card.
-  /// 
+  ///
   /// If null, defaults to Theme.of(context).cardColor.
   final Color expandedColor;
 
   /// The duration of the expand and collapse animations.
-  /// 
+  ///
   /// Defaults to 200 milliseconds.
   final Duration duration;
 
   /// The animation curve used to control the elevation of the expanded card.
-  /// 
+  ///
   /// Defaults to Curves.easeOut.
   final Curve elevationCurve;
 
   /// The animation curve used to control the height of the expanding/collapsing card.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve heightFactorCurve;
 
   /// The animation curve used to control the rotation of the `trailing` widget.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve turnsCurve;
 
   /// The animation curve used to control the header, icon, and material colors.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve colorCurve;
 
   /// The animation curve used by the expanding/collapsing padding.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve paddingCurve;
 
@@ -212,8 +212,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
     _elevation = _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
-    if (_isExpanded)
-      _controller.value = 1.0;
+    if (_isExpanded) _controller.value = 1.0;
   }
 
   @override
@@ -229,8 +228,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         _controller.forward();
       } else {
         _controller.reverse().then<void>((void value) {
-          if (!mounted)
-            return;
+          if (!mounted) return;
           setState(() {
             // Rebuild without widget.children.
           });
@@ -238,8 +236,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
+    if (widget.onExpansionChanged != null) widget.onExpansionChanged(_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
@@ -312,6 +309,5 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       builder: _buildChildren,
       child: closed ? null : Column(children: widget.children),
     );
-
   }
 }
