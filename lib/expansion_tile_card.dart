@@ -268,9 +268,9 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                       leading: widget.leading,
                       title: widget.title,
                       subtitle: widget.subtitle,
-                      trailing: widget.trailing ?? RotationTransition(
+                      trailing: RotationTransition(
                         turns: _iconTurns,
-                        child: const Icon(Icons.expand_more),
+                        child: widget.trailing ?? Icon(Icons.expand_more),
                       ),
                     ),
                   ),
