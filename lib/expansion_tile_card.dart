@@ -54,6 +54,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.colorCurve = Curves.easeIn,
     this.paddingCurve = Curves.easeIn,
     this.isThreeLine = false,
+    this.shadowColor = const Color(0xffaaaaaa),
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -103,6 +104,8 @@ class ExpansionTileCard extends StatefulWidget {
   ///
   ///Defaults to 0.0
   final double initialElevation;
+
+  final Color shadowColor;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
@@ -247,6 +250,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         color: _materialColor.value,
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
+        shadowColor: widget.shadowColor,
         child: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
