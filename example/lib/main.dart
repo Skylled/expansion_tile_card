@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Use me any time you think your app could benefit from being just a bit more Material.""",
                     style: Theme.of(context)
                         .textTheme
-                        .body1
+                        .bodyText2
                         .copyWith(fontSize: 16),
                   ),
                 ),

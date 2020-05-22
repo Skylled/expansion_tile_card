@@ -283,7 +283,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
   void didChangeDependencies() {
     final ThemeData theme = Theme.of(context);
     _headerColorTween
-      ..begin = theme.textTheme.subhead.color
+      ..begin = theme.textTheme.subtitle1.color
       ..end = theme.accentColor;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
