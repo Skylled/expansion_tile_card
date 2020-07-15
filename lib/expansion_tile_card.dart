@@ -54,6 +54,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.colorCurve = Curves.easeIn,
     this.paddingCurve = Curves.easeIn,
     this.isThreeLine = false,
+    this.color,
     this.shadowColor = const Color(0xffaaaaaa),
   })  : assert(initiallyExpanded != null),
         super(key: key);
@@ -165,6 +166,9 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to Curves.easeIn.
   final Curve paddingCurve;
 
+  ///This color will overwrite all other colors
+  final Color color;
+
   @override
   _ExpansionTileCardState createState() => _ExpansionTileCardState();
 }
@@ -247,7 +251,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       padding: _padding.value,
       child: Material(
         type: MaterialType.card,
-        color: _materialColor.value,
+        color: widget.color ?? _materialColor.value,
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
         shadowColor: widget.shadowColor,
