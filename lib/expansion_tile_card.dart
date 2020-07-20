@@ -56,6 +56,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.isThreeLine = false,
     this.color,
     this.shadowColor = const Color(0xffaaaaaa),
+    this.constantElevation,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -169,6 +170,9 @@ class ExpansionTileCard extends StatefulWidget {
   ///This color will overwrite all other colors
   final Color color;
 
+  ///This elevation will overwrite all other
+  final double constantElevation;
+
   @override
   _ExpansionTileCardState createState() => _ExpansionTileCardState();
 }
@@ -253,7 +257,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         type: MaterialType.card,
         color: widget.color ?? _materialColor.value,
         borderRadius: widget.borderRadius,
-        elevation: _elevation.value,
+        elevation: widget.constantElevation ?? _elevation.value,
         shadowColor: widget.shadowColor,
         child: Container(
           child: Column(
