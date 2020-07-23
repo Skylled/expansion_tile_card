@@ -104,7 +104,7 @@ class ExpansionTileCard extends StatefulWidget {
 
   /// The elevation when collapsed
   ///
-  ///Defaults to 0.0
+  /// Defaults to 0.0
   final double initialElevation;
 
   final Color shadowColor;
