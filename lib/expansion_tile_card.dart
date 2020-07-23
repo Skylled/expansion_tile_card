@@ -40,6 +40,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.trailing,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.elevation = 2.0,
+    this.initialElevation = 0.0,
     this.initiallyExpanded = false,
     this.initialPadding = EdgeInsets.zero,
     this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
@@ -52,8 +53,13 @@ class ExpansionTileCard extends StatefulWidget {
     this.turnsCurve = Curves.easeIn,
     this.colorCurve = Curves.easeIn,
     this.paddingCurve = Curves.easeIn,
+    this.isThreeLine = false,
+    this.shadowColor = const Color(0xffaaaaaa),
+    this.animateTrailing = false,
   })  : assert(initiallyExpanded != null),
         super(key: key);
+
+  final bool isThreeLine;
 
   /// A widget to display before the title.
   ///
@@ -85,6 +91,11 @@ class ExpansionTileCard extends StatefulWidget {
   /// A widget to display instead of a rotating arrow icon.
   final Widget trailing;
 
+  /// Whether or not to animate a custom trailing widget.
+  ///
+  /// Defaults to false.
+  final bool animateTrailing;
+
   /// The radius used for the Material widget's border. Only visible once expanded.
   ///
   /// Defaults to a circular border with a radius of 8.0.
@@ -95,61 +106,71 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to 2.0.
   final double elevation;
 
+  /// The elevation when collapsed
+  ///
+  /// Defaults to 0.0
+  final double initialElevation;
+
+  /// The color of the cards shadow.
+  ///
+  /// Defaults to Color(0xffaaaaaa)
+  final Color shadowColor;
+
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
 
   /// The padding around the outside of the ExpansionTileCard while collapsed.
-  /// 
+  ///
   /// Defaults to EdgeInsets.zero.
   final EdgeInsetsGeometry initialPadding;
 
   /// The padding around the outside of the ExpansionTileCard while collapsed.
-  /// 
+  ///
   /// Defaults to 6.0 vertical padding.
   final EdgeInsetsGeometry finalPadding;
 
   /// The inner `contentPadding` of the ListTile widget.
-  /// 
+  ///
   /// If null, ListTile defaults to 16.0 horizontal padding.
   final EdgeInsetsGeometry contentPadding;
 
   /// The background color of the unexpanded tile.
-  /// 
+  ///
   /// If null, defaults to Theme.of(context).canvasColor.
   final Color baseColor;
 
   /// The background color of the expanded card.
-  /// 
+  ///
   /// If null, defaults to Theme.of(context).cardColor.
   final Color expandedColor;
 
   /// The duration of the expand and collapse animations.
-  /// 
+  ///
   /// Defaults to 200 milliseconds.
   final Duration duration;
 
   /// The animation curve used to control the elevation of the expanded card.
-  /// 
+  ///
   /// Defaults to Curves.easeOut.
   final Curve elevationCurve;
 
   /// The animation curve used to control the height of the expanding/collapsing card.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve heightFactorCurve;
 
   /// The animation curve used to control the rotation of the `trailing` widget.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve turnsCurve;
 
   /// The animation curve used to control the header, icon, and material colors.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve colorCurve;
 
   /// The animation curve used by the expanding/collapsing padding.
-  /// 
+  ///
   /// Defaults to Curves.easeIn.
   final Curve paddingCurve;
 
@@ -200,11 +221,10 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
     _headerColor = _controller.drive(_headerColorTween.chain(_colorTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
-    _elevation = _controller.drive(Tween<double>(begin: 0.0, end: widget.elevation).chain(_elevationTween));
+    _elevation = _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
-    if (_isExpanded)
-      _controller.value = 1.0;
+    if (_isExpanded) _controller.value = 1.0;
   }
 
   @override
@@ -220,8 +240,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         _controller.forward();
       } else {
         _controller.reverse().then<void>((void value) {
-          if (!mounted)
-            return;
+          if (!mounted) return;
           setState(() {
             // Rebuild without widget.children.
           });
@@ -229,8 +248,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
+    if (widget.onExpansionChanged != null) widget.onExpansionChanged(_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
@@ -241,6 +259,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
         color: _materialColor.value,
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
+        shadowColor: widget.shadowColor,
         child: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -254,13 +273,14 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ListTile(
+                      isThreeLine: widget.isThreeLine,
                       contentPadding: widget.contentPadding,
                       leading: widget.leading,
                       title: widget.title,
                       subtitle: widget.subtitle,
-                      trailing: widget.trailing ?? RotationTransition(
-                        turns: _iconTurns,
-                        child: const Icon(Icons.expand_more),
+                      trailing: RotationTransition(
+                        turns: widget.trailing == null || widget.animateTrailing ? _iconTurns : AlwaysStoppedAnimation(0),
+                        child: widget.trailing ?? Icon(Icons.expand_more),
                       ),
                     ),
                   ),
@@ -302,6 +322,5 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       builder: _buildChildren,
       child: closed ? null : Column(children: widget.children),
     );
-
   }
 }
