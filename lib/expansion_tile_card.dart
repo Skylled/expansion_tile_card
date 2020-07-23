@@ -107,6 +107,9 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to 0.0
   final double initialElevation;
 
+  /// The color of the cards shadow.
+  ///
+  /// Defaults to Color(0xffaaaaaa)
   final Color shadowColor;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
