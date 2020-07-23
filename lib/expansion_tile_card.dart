@@ -55,6 +55,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.paddingCurve = Curves.easeIn,
     this.isThreeLine = false,
     this.shadowColor = const Color(0xffaaaaaa),
+    this.animateTrailing = false,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -89,6 +90,11 @@ class ExpansionTileCard extends StatefulWidget {
 
   /// A widget to display instead of a rotating arrow icon.
   final Widget trailing;
+
+  /// Whether or not to animate a custom trailing widget.
+  ///
+  /// Defaults to false.
+  final bool animateTrailing;
 
   /// The radius used for the Material widget's border. Only visible once expanded.
   ///
@@ -273,7 +279,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
                       title: widget.title,
                       subtitle: widget.subtitle,
                       trailing: RotationTransition(
-                        turns: _iconTurns,
+                        turns: widget.trailing == null || widget.animateTrailing ? _iconTurns : AlwaysStoppedAnimation(0),
                         child: widget.trailing ?? Icon(Icons.expand_more),
                       ),
                     ),
