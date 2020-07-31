@@ -26,7 +26,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
 
@@ -58,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       vertical: 8.0,
                     ),
                     child: Text(
-"""Hi there, I'm a drop-in replacement for Flutter's ExpansionTile.
+                      """Hi there, I'm a drop-in replacement for Flutter's ExpansionTile.
 
 Use me any time you think your app could benefit from being just a bit more Material.
 
@@ -148,7 +147,7 @@ These buttons control the next card down!""",
                       vertical: 8.0,
                     ),
                     child: Text(
-"""Hi there, I'm a drop-in replacement for Flutter's ExpansionTile.
+                      """Hi there, I'm a drop-in replacement for Flutter's ExpansionTile.
 
 Use me any time you think your app could benefit from being just a bit more Material.
 
@@ -219,7 +218,7 @@ These buttons control the card above!""",
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

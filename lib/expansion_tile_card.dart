@@ -178,8 +178,10 @@ class ExpansionTileCard extends StatefulWidget {
   ExpansionTileCardState createState() => ExpansionTileCardState();
 }
 
-class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerProviderStateMixin {
-  static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
+class ExpansionTileCardState extends State<ExpansionTileCard>
+    with SingleTickerProviderStateMixin {
+  static final Animatable<double> _halfTween =
+      Tween<double>(begin: 0.0, end: 0.5);
 
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
@@ -221,9 +223,12 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
     _headerColor = _controller.drive(_headerColorTween.chain(_colorTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
-    _elevation = _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
+    _elevation = _controller.drive(
+        Tween<double>(begin: widget.initialElevation, end: widget.elevation)
+            .chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
-    _isExpanded = PageStorage.of(context)?.readState(context) as bool ?? widget.initiallyExpanded;
+    _isExpanded = PageStorage.of(context)?.readState(context) as bool ??
+        widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -236,21 +241,22 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
   // Credit: Simon Lightfoot - https://stackoverflow.com/a/48935106/955974
   void _setExpansion(bool shouldBeExpanded) {
     if (shouldBeExpanded != _isExpanded) {
-    setState(() {
-      _isExpanded = shouldBeExpanded;
-      if (_isExpanded) {
-        _controller.forward();
-      } else {
-        _controller.reverse().then<void>((void value) {
-          if (!mounted) return;
-          setState(() {
-            // Rebuild without widget.children.
+      setState(() {
+        _isExpanded = shouldBeExpanded;
+        if (_isExpanded) {
+          _controller.forward();
+        } else {
+          _controller.reverse().then<void>((void value) {
+            if (!mounted) return;
+            setState(() {
+              // Rebuild without widget.children.
+            });
           });
-        });
-      }
-      PageStorage.of(context)?.writeState(context, _isExpanded);
-    });
-    if (widget.onExpansionChanged != null) widget.onExpansionChanged(_isExpanded);
+        }
+        PageStorage.of(context)?.writeState(context, _isExpanded);
+      });
+      if (widget.onExpansionChanged != null)
+        widget.onExpansionChanged(_isExpanded);
     }
   }
 
@@ -280,7 +286,8 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               InkWell(
-                customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
+                customBorder:
+                    RoundedRectangleBorder(borderRadius: widget.borderRadius),
                 onTap: toggleExpansion,
                 child: ListTileTheme.merge(
                   iconColor: _iconColor.value,
@@ -294,7 +301,9 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
                       title: widget.title,
                       subtitle: widget.subtitle,
                       trailing: RotationTransition(
-                        turns: widget.trailing == null || widget.animateTrailing ? _iconTurns : AlwaysStoppedAnimation(0),
+                        turns: widget.trailing == null || widget.animateTrailing
+                            ? _iconTurns
+                            : AlwaysStoppedAnimation(0),
                         child: widget.trailing ?? Icon(Icons.expand_more),
                       ),
                     ),
