@@ -175,10 +175,10 @@ class ExpansionTileCard extends StatefulWidget {
   final Curve paddingCurve;
 
   @override
-  _ExpansionTileCardState createState() => _ExpansionTileCardState();
+  ExpansionTileCardState createState() => ExpansionTileCardState();
 }
 
-class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerProviderStateMixin {
+class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerProviderStateMixin {
   static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
   final ColorTween _headerColorTween = ColorTween();
@@ -233,9 +233,10 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
     super.dispose();
   }
 
-  void _handleTap() {
+  void _setExpansion(bool shouldBeExpanded) {
+    if (shouldBeExpanded != _isExpanded) {
     setState(() {
-      _isExpanded = !_isExpanded;
+      _isExpanded = shouldBeExpanded;
       if (_isExpanded) {
         _controller.forward();
       } else {
@@ -249,6 +250,19 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
     if (widget.onExpansionChanged != null) widget.onExpansionChanged(_isExpanded);
+    }
+  }
+
+  void expand() {
+    _setExpansion(true);
+  }
+
+  void collapse() {
+    _setExpansion(false);
+  }
+
+  void toggleExpansion() {
+    _setExpansion(!_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
@@ -266,7 +280,7 @@ class _ExpansionTileCardState extends State<ExpansionTileCard> with SingleTicker
             children: <Widget>[
               InkWell(
                 customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
-                onTap: _handleTap,
+                onTap: toggleExpansion,
                 child: ListTileTheme.merge(
                   iconColor: _iconColor.value,
                   textColor: _headerColor.value,
