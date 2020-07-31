@@ -233,6 +233,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
     super.dispose();
   }
 
+  // Credit: Simon Lightfoot - https://stackoverflow.com/a/48935106/955974
   void _setExpansion(bool shouldBeExpanded) {
     if (shouldBeExpanded != _isExpanded) {
     setState(() {
