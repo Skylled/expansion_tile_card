@@ -43,7 +43,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.initialElevation = 0.0,
     this.initiallyExpanded = false,
     this.initialPadding = EdgeInsets.zero,
-    this.finalPadding = const EdgeInsets.symmetric(vertical: 6.0),
+    this.finalPadding = const EdgeInsets.only(bottom: 6.0),
     this.contentPadding,
     this.baseColor,
     this.expandedColor,
