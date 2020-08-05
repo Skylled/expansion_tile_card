@@ -131,6 +131,7 @@ These buttons control the next card down!""",
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ExpansionTileCard(
               key: cardB,
+              expandedTextColor: Colors.red,
               leading: CircleAvatar(child: Text('B')),
               title: Text('Tap me!'),
               subtitle: Text('I expand, too!'),
