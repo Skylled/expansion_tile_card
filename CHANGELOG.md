@@ -1,3 +1,10 @@
+## [2.0.0] - Null Safety and more
+
+* **Breaking** - Migrate to Null Safety. Requires newer build of Flutter
+* Add `expandedTextColor` so that expanded card can use alternate color. Thanks @msandwidi!
+* Adjust default padding so `title` doesn't move
+* Migrate example package to use `TextButton` instead of `FlatButton`
+
 ## [1.1.0] - Customizability
 
 * **Breaking** - Migrate text to 2018 Material Design spec. Requires Flutter >= 1.17.0
