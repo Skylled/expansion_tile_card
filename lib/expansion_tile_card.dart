@@ -31,9 +31,9 @@ class ExpansionTileCard extends StatefulWidget {
   /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
   /// be non-null.
   const ExpansionTileCard({
-    Key key,
+    Key? key,
     this.leading,
-    @required this.title,
+    required this.title,
     this.subtitle,
     this.onExpansionChanged,
     this.children = const <Widget>[],
@@ -65,7 +65,7 @@ class ExpansionTileCard extends StatefulWidget {
   /// A widget to display before the title.
   ///
   /// Typically a [CircleAvatar] widget.
-  final Widget leading;
+  final Widget? leading;
 
   /// The primary content of the list item.
   ///
@@ -75,14 +75,14 @@ class ExpansionTileCard extends StatefulWidget {
   /// Additional content displayed below the title.
   ///
   /// Typically a [Text] widget.
-  final Widget subtitle;
+  final Widget? subtitle;
 
   /// Called when the tile expands or collapses.
   ///
   /// When the tile starts expanding, this function is called with the value
   /// true. When the tile starts collapsing, this function is called with
   /// the value false.
-  final ValueChanged<bool> onExpansionChanged;
+  final ValueChanged<bool>? onExpansionChanged;
 
   /// The widgets that are displayed when the tile expands.
   ///
@@ -90,7 +90,7 @@ class ExpansionTileCard extends StatefulWidget {
   final List<Widget> children;
 
   /// A widget to display instead of a rotating arrow icon.
-  final Widget trailing;
+  final Widget? trailing;
 
   /// Whether or not to animate a custom trailing widget.
   ///
@@ -133,22 +133,22 @@ class ExpansionTileCard extends StatefulWidget {
   /// The inner `contentPadding` of the ListTile widget.
   ///
   /// If null, ListTile defaults to 16.0 horizontal padding.
-  final EdgeInsetsGeometry contentPadding;
+  final EdgeInsetsGeometry? contentPadding;
 
   /// The background color of the unexpanded tile.
   ///
   /// If null, defaults to Theme.of(context).canvasColor.
-  final Color baseColor;
+  final Color? baseColor;
 
   /// The background color of the expanded card.
   ///
   /// If null, defaults to Theme.of(context).cardColor.
-  final Color expandedColor;
+  final Color? expandedColor;
 
   ///The color of the text of the expended card
   ///
   ///If null, defaults to Theme.of(context).accentColor.
-  final Color expandedTextColor;
+  final Color? expandedTextColor;
 
   /// The duration of the expand and collapse animations.
   ///
@@ -192,21 +192,21 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
   final ColorTween _headerColorTween = ColorTween();
   final ColorTween _iconColorTween = ColorTween();
   final ColorTween _materialColorTween = ColorTween();
-  EdgeInsetsTween _edgeInsetsTween;
-  Animatable<double> _elevationTween;
-  Animatable<double> _heightFactorTween;
-  Animatable<double> _turnsTween;
-  Animatable<double> _colorTween;
-  Animatable<double> _paddingTween;
+  late EdgeInsetsTween _edgeInsetsTween;
+  late Animatable<double> _elevationTween;
+  late Animatable<double> _heightFactorTween;
+  late Animatable<double> _turnsTween;
+  late Animatable<double> _colorTween;
+  late Animatable<double> _paddingTween;
 
-  AnimationController _controller;
-  Animation<double> _iconTurns;
-  Animation<double> _heightFactor;
-  Animation<double> _elevation;
-  Animation<Color> _headerColor;
-  Animation<Color> _iconColor;
-  Animation<Color> _materialColor;
-  Animation<EdgeInsets> _padding;
+  late AnimationController _controller;
+  late Animation<double> _iconTurns;
+  late Animation<double> _heightFactor;
+  late Animation<double> _elevation;
+  late Animation<Color?> _headerColor;
+  late Animation<Color?> _iconColor;
+  late Animation<Color?> _materialColor;
+  late Animation<EdgeInsets> _padding;
 
   bool _isExpanded = false;
 
@@ -214,8 +214,8 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
   void initState() {
     super.initState();
     _edgeInsetsTween = EdgeInsetsTween(
-      begin: widget.initialPadding,
-      end: widget.finalPadding,
+      begin: widget.initialPadding as EdgeInsets?,
+      end: widget.finalPadding as EdgeInsets?,
     );
     _elevationTween = CurveTween(curve: widget.elevationCurve);
     _heightFactorTween = CurveTween(curve: widget.heightFactorCurve);
@@ -233,7 +233,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
         Tween<double>(begin: widget.initialElevation, end: widget.elevation)
             .chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
-    _isExpanded = PageStorage.of(context)?.readState(context) as bool ??
+    _isExpanded = PageStorage.of(context)?.readState(context) as bool? ??
         widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
@@ -262,7 +262,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
         PageStorage.of(context)?.writeState(context, _isExpanded);
       });
       if (widget.onExpansionChanged != null)
-        widget.onExpansionChanged(_isExpanded);
+        widget.onExpansionChanged!(_isExpanded);
     }
   }
 
@@ -278,7 +278,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
     _setExpansion(!_isExpanded);
   }
 
-  Widget _buildChildren(BuildContext context, Widget child) {
+  Widget _buildChildren(BuildContext context, Widget? child) {
     return Padding(
       padding: _padding.value,
       child: Material(
@@ -333,7 +333,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
   void didChangeDependencies() {
     final ThemeData theme = Theme.of(context);
     _headerColorTween
-      ..begin = theme.textTheme.subtitle1.color
+      ..begin = theme.textTheme.subtitle1!.color
       ..end = widget.expandedTextColor ?? theme.accentColor;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor

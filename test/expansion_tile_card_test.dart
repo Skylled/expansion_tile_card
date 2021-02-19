@@ -1,22 +1,22 @@
 // Originally based on expansion_tile_test.dart from Flutter.
 //
-// Copyright 2017 The Chromium Authors. All rights reserved.
+// Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import '../lib/expansion_tile_card.dart';
 
 class TestIcon extends StatefulWidget {
-  const TestIcon({Key key}) : super(key: key);
+  const TestIcon({Key? key}) : super(key: key);
 
   @override
   TestIconState createState() => TestIconState();
 }
 
 class TestIconState extends State<TestIcon> {
-  IconThemeData iconTheme;
+  late IconThemeData iconTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class TestIconState extends State<TestIcon> {
 }
 
 class TestText extends StatefulWidget {
-  const TestText(this.text, {Key key}) : super(key: key);
+  const TestText(this.text, {Key? key}) : super(key: key);
 
   final String text;
 
@@ -35,7 +35,7 @@ class TestText extends StatefulWidget {
 }
 
 class TestTextState extends State<TestText> {
-  TextStyle textStyle;
+  late TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ void main() {
   const Color _unselectedWidgetColor = Colors.black54;
   const Color _headerColor = Colors.black45;
 
-  testWidgets('ExpansionTile initial state', (WidgetTester tester) async {
+  testWidgets('ExpansionTileCard initial state', (WidgetTester tester) async {
     final Key topKey = UniqueKey();
     const Key expandedKey = PageStorageKey<String>('expanded');
     const Key collapsedKey = PageStorageKey<String>('collapsed');
@@ -60,7 +60,6 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(
-        platform: TargetPlatform.iOS,
         dividerColor: _dividerColor,
       ),
       home: Material(
@@ -68,11 +67,10 @@ void main() {
           child: Column(
             children: <Widget>[
               ListTile(title: const Text('Top'), key: topKey),
-              ExpansionTile(
+              ExpansionTileCard(
                 key: expandedKey,
                 initiallyExpanded: true,
                 title: const Text('Expanded'),
-                backgroundColor: Colors.red,
                 children: <Widget>[
                   ListTile(
                     key: tileKey,
@@ -80,7 +78,7 @@ void main() {
                   ),
                 ],
               ),
-              ExpansionTile(
+              ExpansionTileCard(
                 key: collapsedKey,
                 initiallyExpanded: false,
                 title: const Text('Collapsed'),
@@ -91,7 +89,7 @@ void main() {
                   ),
                 ],
               ),
-              const ExpansionTile(
+              const ExpansionTileCard(
                 key: defaultKey,
                 title: Text('Default'),
                 children: <Widget>[
@@ -114,15 +112,15 @@ void main() {
     expect(getHeight(topKey), getHeight(collapsedKey) - 2.0);
     expect(getHeight(topKey), getHeight(defaultKey) - 2.0);
 
-    BoxDecoration expandedContainerDecoration = getContainer(expandedKey).decoration;
+    BoxDecoration expandedContainerDecoration = getContainer(expandedKey).decoration! as BoxDecoration;
     expect(expandedContainerDecoration.color, Colors.red);
-    expect(expandedContainerDecoration.border.top.color, _dividerColor);
-    expect(expandedContainerDecoration.border.bottom.color, _dividerColor);
+    expect(expandedContainerDecoration.border!.top.color, _dividerColor);
+    expect(expandedContainerDecoration.border!.bottom.color, _dividerColor);
 
-    BoxDecoration collapsedContainerDecoration = getContainer(collapsedKey).decoration;
+    BoxDecoration collapsedContainerDecoration = getContainer(collapsedKey).decoration! as BoxDecoration;
     expect(collapsedContainerDecoration.color, Colors.transparent);
-    expect(collapsedContainerDecoration.border.top.color, Colors.transparent);
-    expect(collapsedContainerDecoration.border.bottom.color, Colors.transparent);
+    expect(collapsedContainerDecoration.border!.top.color, Colors.transparent);
+    expect(collapsedContainerDecoration.border!.bottom.color, Colors.transparent);
 
     await tester.tap(find.text('Expanded'));
     await tester.tap(find.text('Collapsed'));
@@ -132,11 +130,11 @@ void main() {
 
     // Pump to the middle of the animation for expansion.
     await tester.pump(const Duration(milliseconds: 100));
-    final BoxDecoration collapsingContainerDecoration = getContainer(collapsedKey).decoration;
+    final BoxDecoration collapsingContainerDecoration = getContainer(collapsedKey).decoration! as BoxDecoration;
     expect(collapsingContainerDecoration.color, Colors.transparent);
     // Opacity should change but color component should remain the same.
-    expect(collapsingContainerDecoration.border.top.color, const Color(0x15333333));
-    expect(collapsingContainerDecoration.border.bottom.color, const Color(0x15333333));
+    expect(collapsingContainerDecoration.border!.top.color, const Color(0x15333333));
+    expect(collapsingContainerDecoration.border!.bottom.color, const Color(0x15333333));
 
     // Pump all the way to the end now.
     await tester.pump(const Duration(seconds: 1));
@@ -146,17 +144,17 @@ void main() {
     expect(getHeight(topKey), getHeight(defaultKey) - getHeight(tileKey) - 2.0);
 
     // Expanded should be collapsed now.
-    expandedContainerDecoration = getContainer(expandedKey).decoration;
+    expandedContainerDecoration = getContainer(expandedKey).decoration! as BoxDecoration;
     expect(expandedContainerDecoration.color, Colors.transparent);
-    expect(expandedContainerDecoration.border.top.color, Colors.transparent);
-    expect(expandedContainerDecoration.border.bottom.color, Colors.transparent);
+    expect(expandedContainerDecoration.border!.top.color, Colors.transparent);
+    expect(expandedContainerDecoration.border!.bottom.color, Colors.transparent);
 
     // Collapsed should be expanded now.
-    collapsedContainerDecoration = getContainer(collapsedKey).decoration;
+    collapsedContainerDecoration = getContainer(collapsedKey).decoration! as BoxDecoration;
     expect(collapsedContainerDecoration.color, Colors.transparent);
-    expect(collapsedContainerDecoration.border.top.color, _dividerColor);
-    expect(collapsedContainerDecoration.border.bottom.color, _dividerColor);
-  });
+    expect(collapsedContainerDecoration.border!.top.color, _dividerColor);
+    expect(collapsedContainerDecoration.border!.bottom.color, _dividerColor);
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS,  TargetPlatform.macOS }));
 
   testWidgets('ListTileTheme', (WidgetTester tester) async {
     final Key expandedTitleKey = UniqueKey();
@@ -167,7 +165,6 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
-          platform: TargetPlatform.iOS,
           accentColor: _accentColor,
           unselectedWidgetColor: _unselectedWidgetColor,
           textTheme: const TextTheme(subtitle1: TextStyle(color: _headerColor)),
@@ -177,14 +174,13 @@ void main() {
             child: Column(
               children: <Widget>[
                 const ListTile(title: Text('Top')),
-                ExpansionTile(
+                ExpansionTileCard(
                   initiallyExpanded: true,
                   title: TestText('Expanded', key: expandedTitleKey),
-                  backgroundColor: Colors.red,
                   children: const <Widget>[ListTile(title: Text('0'))],
                   trailing: TestIcon(key: expandedIconKey),
                 ),
-                ExpansionTile(
+                ExpansionTileCard(
                   initiallyExpanded: false,
                   title: TestText('Collapsed', key: collapsedTitleKey),
                   children: const <Widget>[ListTile(title: Text('0'))],
@@ -197,8 +193,8 @@ void main() {
       ),
     );
 
-    Color iconColor(Key key) => tester.state<TestIconState>(find.byKey(key)).iconTheme.color;
-    Color textColor(Key key) => tester.state<TestTextState>(find.byKey(key)).textStyle.color;
+    Color iconColor(Key key) => tester.state<TestIconState>(find.byKey(key)).iconTheme.color!;
+    Color textColor(Key key) => tester.state<TestTextState>(find.byKey(key)).textStyle.color!;
 
     expect(textColor(expandedTitleKey), _accentColor);
     expect(textColor(collapsedTitleKey), _headerColor);
@@ -216,13 +212,13 @@ void main() {
     expect(textColor(collapsedTitleKey), _accentColor);
     expect(iconColor(expandedIconKey), _unselectedWidgetColor);
     expect(iconColor(collapsedIconKey), _accentColor);
-  });
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS,  TargetPlatform.macOS }));
 
-  testWidgets('ExpansionTile subtitle', (WidgetTester tester) async {
+  testWidgets('ExpansionTileCard subtitle', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: ExpansionTile(
+          body: ExpansionTileCard(
             title: Text('Title'),
             subtitle: Text('Subtitle'),
             children: <Widget>[ListTile(title: Text('0'))],
