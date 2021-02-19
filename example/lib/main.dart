@@ -31,6 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -74,9 +80,8 @@ These buttons control the next card down!""",
                   buttonHeight: 52.0,
                   buttonMinWidth: 90.0,
                   children: <Widget>[
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardB.currentState?.expand();
                       },
@@ -90,9 +95,8 @@ These buttons control the next card down!""",
                         ],
                       ),
                     ),
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardB.currentState?.collapse();
                       },
@@ -106,9 +110,8 @@ These buttons control the next card down!""",
                         ],
                       ),
                     ),
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardB.currentState?.toggleExpansion();
                       },
@@ -165,9 +168,8 @@ These buttons control the card above!""",
                   buttonHeight: 52.0,
                   buttonMinWidth: 90.0,
                   children: <Widget>[
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardA.currentState?.expand();
                       },
@@ -181,9 +183,8 @@ These buttons control the card above!""",
                         ],
                       ),
                     ),
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardA.currentState?.collapse();
                       },
@@ -197,9 +198,8 @@ These buttons control the card above!""",
                         ],
                       ),
                     ),
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                    TextButton(
+                      style: flatButtonStyle,
                       onPressed: () {
                         cardA.currentState?.toggleExpansion();
                       },
