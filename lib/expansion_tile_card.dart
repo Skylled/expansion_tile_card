@@ -56,8 +56,10 @@ class ExpansionTileCard extends StatefulWidget {
     this.paddingCurve = Curves.easeIn,
     this.isThreeLine = false,
     this.shadowColor = const Color(0xffaaaaaa),
+    this.clipBehavior = Clip.none,
     this.animateTrailing = false,
   })  : assert(initiallyExpanded != null),
+        assert(clipBehavior != null),
         super(key: key);
 
   final bool isThreeLine;
@@ -116,6 +118,16 @@ class ExpansionTileCard extends StatefulWidget {
   ///
   /// Defaults to Color(0xffaaaaaa)
   final Color shadowColor;
+
+  /// {@template flutter.material.Material.clipBehavior}
+  /// The content will be clipped (or not) according to this option.
+  ///
+  /// See the enum [Clip] for details of all possible options and their common
+  /// use cases.
+  /// {@endtemplate}
+  ///
+  /// Defaults to [Clip.none], and must not be null.
+  final Clip clipBehavior;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
@@ -287,6 +299,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
         shadowColor: widget.shadowColor,
+        clipBehavior: widget.clipBehavior,
         child: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
