@@ -58,6 +58,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.shadowColor = const Color(0xFFAAAAAA),
     this.animateTrailing = false,
     this.colorCard,
+    this.colorBaseTrailing = Colors.black
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -70,6 +71,9 @@ class ExpansionTileCard extends StatefulWidget {
 
   /// Set a color for card container
   final Color? colorCard;
+
+  /// Set a color for the open button (base trailing)
+  final Color? colorBaseTrailing;
 
   /// The primary content of the list item.
   ///
@@ -314,7 +318,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
                         turns: widget.trailing == null || widget.animateTrailing
                             ? _iconTurns
                             : AlwaysStoppedAnimation(0),
-                        child: widget.trailing ?? Icon(Icons.expand_more),
+                        child: widget.trailing ?? Icon(Icons.expand_more, color: widget.colorBaseTrailing ?? _materialColor.value,),
                       ),
                     ),
                   ),
