@@ -55,8 +55,9 @@ class ExpansionTileCard extends StatefulWidget {
     this.colorCurve = Curves.easeIn,
     this.paddingCurve = Curves.easeIn,
     this.isThreeLine = false,
-    this.shadowColor = const Color(0xffaaaaaa),
+    this.shadowColor = const Color(0xFFAAAAAA),
     this.animateTrailing = false,
+    this.colorCard = Colors.white,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -66,6 +67,9 @@ class ExpansionTileCard extends StatefulWidget {
   ///
   /// Typically a [CircleAvatar] widget.
   final Widget? leading;
+
+  /// Set a color for card container
+  final Color colorCard;
 
   /// The primary content of the list item.
   ///
@@ -334,10 +338,10 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
     final ThemeData theme = Theme.of(context);
     _headerColorTween
       ..begin = theme.textTheme.subtitle1!.color
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _materialColorTween
       ..begin = widget.baseColor ?? theme.canvasColor
       ..end = widget.expandedColor ?? theme.cardColor;
