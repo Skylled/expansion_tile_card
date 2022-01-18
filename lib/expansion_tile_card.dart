@@ -57,7 +57,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.isThreeLine = false,
     this.shadowColor = const Color(0xFFAAAAAA),
     this.animateTrailing = false,
-    this.colorCard = Colors.white,
+    this.colorCard,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -69,7 +69,7 @@ class ExpansionTileCard extends StatefulWidget {
   final Widget? leading;
 
   /// Set a color for card container
-  final Color colorCard;
+  final Color? colorCard;
 
   /// The primary content of the list item.
   ///
@@ -287,7 +287,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
       padding: _padding.value,
       child: Material(
         type: MaterialType.card,
-        color: _materialColor.value,
+        color: widget.colorCard ?? _materialColor.value,
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
         shadowColor: widget.shadowColor,
