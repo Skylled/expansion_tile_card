@@ -10,6 +10,12 @@ library expansion_tile_card;
 
 import 'package:flutter/material.dart';
 
+/// The expand direction controls whether we expand up or down. The default is to expand down
+enum ExpandDirection {
+  down,
+  up,
+}
+
 /// A single-line [ListTile] with a trailing button that expands or collapses
 /// the tile to reveal or hide the [children].
 ///
@@ -57,6 +63,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.isThreeLine = false,
     this.shadowColor = const Color(0xffaaaaaa),
     this.animateTrailing = false,
+    this.expandDirection = ExpandDirection.down,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
@@ -180,6 +187,11 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to Curves.easeIn.
   final Curve paddingCurve;
 
+  /// The direction to expand the tile
+  /// This controls the direction and the icon shown
+  /// Defaults to ExpandDirection.down
+  final ExpandDirection expandDirection;
+
   @override
   ExpansionTileCardState createState() => ExpansionTileCardState();
 }
@@ -291,6 +303,13 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              if (widget.expandDirection == ExpandDirection.up)
+                ClipRect(
+                  child: Align(
+                    heightFactor: _heightFactor.value,
+                    child: child,
+                  ),
+                ),
               InkWell(
                 customBorder:
                     RoundedRectangleBorder(borderRadius: widget.borderRadius),
@@ -310,18 +329,25 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
                         turns: widget.trailing == null || widget.animateTrailing
                             ? _iconTurns
                             : AlwaysStoppedAnimation(0),
-                        child: widget.trailing ?? Icon(Icons.expand_more),
+                        child: widget.trailing ??
+                            RotatedBox(
+                                child: Icon(Icons.expand_more),
+                                quarterTurns: widget.expandDirection ==
+                                        ExpandDirection.down
+                                    ? 0
+                                    : 2),
                       ),
                     ),
                   ),
                 ),
               ),
-              ClipRect(
-                child: Align(
-                  heightFactor: _heightFactor.value,
-                  child: child,
+              if (widget.expandDirection == ExpandDirection.down)
+                ClipRect(
+                  child: Align(
+                    heightFactor: _heightFactor.value,
+                    child: child,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
