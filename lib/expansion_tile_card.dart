@@ -147,7 +147,7 @@ class ExpansionTileCard extends StatefulWidget {
 
   ///The color of the text of the expended card
   ///
-  ///If null, defaults to Theme.of(context).accentColor.
+  ///If null, defaults to Theme.of(context).colorScheme.secondary.
   final Color? expandedTextColor;
 
   /// The duration of the expand and collapse animations.
@@ -334,10 +334,10 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
     final ThemeData theme = Theme.of(context);
     _headerColorTween
       ..begin = theme.textTheme.subtitle1!.color
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _materialColorTween
       ..begin = widget.baseColor ?? theme.canvasColor
       ..end = widget.expandedColor ?? theme.cardColor;
