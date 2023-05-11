@@ -70,7 +70,7 @@ Use me any time you think your app could benefit from being just a bit more Mate
 These buttons control the next card down!""",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2!
+                          .bodyMedium!
                           .copyWith(fontSize: 16),
                     ),
                   ),
@@ -158,7 +158,7 @@ Use me any time you think your app could benefit from being just a bit more Mate
 These buttons control the card above!""",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2!
+                          .bodyMedium!
                           .copyWith(fontSize: 16),
                     ),
                   ),
