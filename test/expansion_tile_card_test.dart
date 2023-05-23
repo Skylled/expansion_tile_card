@@ -167,7 +167,7 @@ void main() {
       MaterialApp(
         theme: ThemeData(
           unselectedWidgetColor: _unselectedWidgetColor,
-          textTheme: const TextTheme(subtitle1: TextStyle(color: _headerColor)),
+          textTheme: const TextTheme(titleMedium: TextStyle(color: _headerColor)),
         ).copyWith(
           colorScheme: ColorScheme.fromSwatch().copyWith(
             secondary: _accentColor,
