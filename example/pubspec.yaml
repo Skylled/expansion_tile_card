@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0-0 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -28,6 +28,7 @@ dependencies:
   cupertino_icons: ^1.0.5
 
 dev_dependencies:
+  flutter_lints:
   flutter_test:
     sdk: flutter
 
