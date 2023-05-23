@@ -1,3 +1,9 @@
+## [3.0.0] - Flutter 3.10 fixes
+
+* **Breaking** Now optimized for Flutter 3.10+ and Dart 3.x
+* Replace deprecated `accentColor`. Thanks @etiennedv-mathu
+* Rebuild example app. Thanks @sergdeus
+
 ## [2.0.0] - Null Safety and more
 
 * **Breaking** - Migrate to Null Safety. Requires newer build of Flutter
