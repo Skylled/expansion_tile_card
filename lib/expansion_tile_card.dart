@@ -31,7 +31,7 @@ class ExpansionTileCard extends StatefulWidget {
   /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
   /// be non-null.
   const ExpansionTileCard({
-    Key? key,
+    super.key,
     this.leading,
     required this.title,
     this.subtitle,
@@ -57,8 +57,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.isThreeLine = false,
     this.shadowColor = const Color(0xffaaaaaa),
     this.animateTrailing = false,
-  })  : assert(initiallyExpanded != null),
-        super(key: key);
+  });
 
   final bool isThreeLine;
 
