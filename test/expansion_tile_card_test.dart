@@ -4,8 +4,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import '../lib/expansion_tile_card.dart';
 
 class TestIcon extends StatefulWidget {
@@ -104,9 +105,9 @@ void main() {
 
     double getHeight(Key key) => tester.getSize(find.byKey(key)).height;
     Container getContainer(Key key) => tester.firstWidget(find.descendant(
-      of: find.byKey(key),
-      matching: find.byType(Container),
-    ));
+          of: find.byKey(key),
+          matching: find.byType(Container),
+        ));
 
     expect(getHeight(topKey), getHeight(expandedKey) - getHeight(tileKey) - 2.0);
     expect(getHeight(topKey), getHeight(collapsedKey) - 2.0);
@@ -154,7 +155,7 @@ void main() {
     expect(collapsedContainerDecoration.color, Colors.transparent);
     expect(collapsedContainerDecoration.border!.top.color, _dividerColor);
     expect(collapsedContainerDecoration.border!.bottom.color, _dividerColor);
-  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS,  TargetPlatform.macOS }));
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{TargetPlatform.iOS, TargetPlatform.macOS}));
 
   testWidgets('ListTileTheme', (WidgetTester tester) async {
     final Key expandedTitleKey = UniqueKey();
@@ -165,9 +166,12 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
-          accentColor: _accentColor,
           unselectedWidgetColor: _unselectedWidgetColor,
           textTheme: const TextTheme(subtitle1: TextStyle(color: _headerColor)),
+        ).copyWith(
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: _accentColor,
+          ),
         ),
         home: Material(
           child: SingleChildScrollView(
@@ -212,7 +216,7 @@ void main() {
     expect(textColor(collapsedTitleKey), _accentColor);
     expect(iconColor(expandedIconKey), _unselectedWidgetColor);
     expect(iconColor(collapsedIconKey), _accentColor);
-  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS,  TargetPlatform.macOS }));
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{TargetPlatform.iOS, TargetPlatform.macOS}));
 
   testWidgets('ExpansionTileCard subtitle', (WidgetTester tester) async {
     await tester.pumpWidget(

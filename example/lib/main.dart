@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -68,10 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Use me any time you think your app could benefit from being just a bit more Material.
 
 These buttons control the next card down!""",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2!
-                          .copyWith(fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
                     ),
                   ),
                 ),
@@ -156,10 +153,7 @@ These buttons control the next card down!""",
 Use me any time you think your app could benefit from being just a bit more Material.
 
 These buttons control the card above!""",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2!
-                          .copyWith(fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
                     ),
                   ),
                 ),
