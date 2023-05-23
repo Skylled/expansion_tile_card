@@ -1,9 +1,10 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -11,13 +12,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'ExpansionTileCard Demo'),
+      home: const MyHomePage(title: 'ExpansionTileCard Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -26,8 +27,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardA = GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardB = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ExpansionTileCard(
               key: cardA,
-              leading: CircleAvatar(child: Text('A')),
-              title: Text('Tap me!'),
-              subtitle: Text('I expand!'),
+              leading: const CircleAvatar(child: Text('A')),
+              title: const Text('Tap me!'),
+              subtitle: const Text('I expand!'),
               children: <Widget>[
-                Divider(
+                const Divider(
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -85,11 +86,11 @@ These buttons control the next card down!""",
                       onPressed: () {
                         cardB.currentState?.expand();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.arrow_downward),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Open'),
                         ],
@@ -100,11 +101,11 @@ These buttons control the next card down!""",
                       onPressed: () {
                         cardB.currentState?.collapse();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.arrow_upward),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Close'),
                         ],
@@ -115,11 +116,11 @@ These buttons control the next card down!""",
                       onPressed: () {
                         cardB.currentState?.toggleExpansion();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.swap_vert),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Toggle'),
                         ],
@@ -135,11 +136,11 @@ These buttons control the next card down!""",
             child: ExpansionTileCard(
               key: cardB,
               expandedTextColor: Colors.red,
-              leading: CircleAvatar(child: Text('B')),
-              title: Text('Tap me!'),
-              subtitle: Text('I expand, too!'),
+              leading: const CircleAvatar(child: Text('B')),
+              title: const Text('Tap me!'),
+              subtitle: const Text('I expand, too!'),
               children: <Widget>[
-                Divider(
+                const Divider(
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -173,11 +174,11 @@ These buttons control the card above!""",
                       onPressed: () {
                         cardA.currentState?.expand();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.arrow_downward),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Open'),
                         ],
@@ -188,11 +189,11 @@ These buttons control the card above!""",
                       onPressed: () {
                         cardA.currentState?.collapse();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.arrow_upward),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Close'),
                         ],
@@ -203,11 +204,11 @@ These buttons control the card above!""",
                       onPressed: () {
                         cardA.currentState?.toggleExpansion();
                       },
-                      child: Column(
+                      child: const Column(
                         children: <Widget>[
                           Icon(Icons.swap_vert),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                           ),
                           Text('Toggle'),
                         ],
