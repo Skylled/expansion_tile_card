@@ -48,6 +48,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.baseColor,
     this.expandedColor,
     this.expandedTextColor,
+    this.dense,
     this.duration = const Duration(milliseconds: 200),
     this.elevationCurve = Curves.easeOut,
     this.heightFactorCurve = Curves.easeIn,
@@ -58,6 +59,8 @@ class ExpansionTileCard extends StatefulWidget {
     this.shadowColor = const Color(0xffaaaaaa),
     this.animateTrailing = false,
   });
+
+  final bool? dense;
 
   final bool isThreeLine;
 
@@ -300,6 +303,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ListTile(
+                      dense: widget.dense,
                       isThreeLine: widget.isThreeLine,
                       contentPadding: widget.contentPadding,
                       leading: widget.leading,
