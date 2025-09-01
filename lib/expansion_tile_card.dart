@@ -57,6 +57,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.isThreeLine = false,
     this.shadowColor = const Color(0xffaaaaaa),
     this.animateTrailing = false,
+    this.closeOthers = false,
   });
 
   final bool isThreeLine;
@@ -179,6 +180,14 @@ class ExpansionTileCard extends StatefulWidget {
   /// Defaults to Curves.easeIn.
   final Curve paddingCurve;
 
+  /// Whether to close other ExpansionTileCards when this one is expanded.
+  ///
+  /// If true, when this card is expanded, all other ExpansionTileCards with
+  /// [closeOthers] set to true will be automatically collapsed.
+  ///
+  /// Defaults to false.
+  final bool closeOthers;
+
   @override
   ExpansionTileCardState createState() => ExpansionTileCardState();
 }
@@ -209,6 +218,9 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
 
   bool _isExpanded = false;
 
+  // Track all instances that have closeOthers enabled
+  static final Set<ExpansionTileCardState> _openCardsWithCloseOthers = {};
+
   @override
   void initState() {
     super.initState();
@@ -234,11 +246,17 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context).readState(context) as bool? ??
         widget.initiallyExpanded;
-    if (_isExpanded) _controller.value = 1.0;
+    if (_isExpanded) {
+      _controller.value = 1.0;
+      if (widget.closeOthers) {
+        _openCardsWithCloseOthers.add(this);
+      }
+    }
   }
 
   @override
   void dispose() {
+    _openCardsWithCloseOthers.remove(this);
     _controller.dispose();
     super.dispose();
   }
@@ -250,6 +268,20 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
         _isExpanded = shouldBeExpanded;
         if (_isExpanded) {
           _controller.forward();
+
+          // If closeOthers is enabled, close all other cards with closeOthers enabled
+          if (widget.closeOthers) {
+            // Create a copy to avoid concurrent modification
+            final openCards =
+                Set<ExpansionTileCardState>.from(_openCardsWithCloseOthers);
+            for (final card in openCards) {
+              if (card != this && card.mounted) {
+                card.collapse();
+              }
+            }
+            _openCardsWithCloseOthers.clear();
+            _openCardsWithCloseOthers.add(this);
+          }
         } else {
           _controller.reverse().then<void>((void value) {
             if (!mounted) return;
@@ -257,11 +289,13 @@ class ExpansionTileCardState extends State<ExpansionTileCard>
               // Rebuild without widget.children.
             });
           });
+          _openCardsWithCloseOthers.remove(this);
         }
         PageStorage.of(context).writeState(context, _isExpanded);
       });
-      if (widget.onExpansionChanged != null)
+      if (widget.onExpansionChanged != null) {
         widget.onExpansionChanged!(_isExpanded);
+      }
     }
   }
 
